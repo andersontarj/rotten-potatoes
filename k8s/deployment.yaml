@@ -29,7 +29,7 @@ spec:
             value: mongopwd
 
 ---
-
+# Service MongoDB
 apiVersion: v1
 kind: Service
 metadata:
@@ -40,3 +40,57 @@ spec:
   ports:
   - port: 27017
   type: ClusterIP
+
+---
+# Deployment da app web Rotten Potatoes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: andersontarj/rotten-potatoes:latest
+        resources:
+            requests:
+              memory: "128Mi"
+              cpu: "0.5"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGODB_DB
+          value: admin
+        - name: MONGODB_HOST
+          value: mongodb
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_USERNAME
+          value: mongouser
+        - name: MONGODB_PASSWORD
+          value: mongopwd
+
+---
+# Service da app web Rotten Potatoes
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 80
+    targetPort: 5000
+    nodePort: 30000
+  type: NodePort

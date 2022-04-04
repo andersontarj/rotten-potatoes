@@ -25,13 +25,12 @@ jobs:
       - name: Docker Build and Push
         uses: docker/build-push-action@v2.7.0
         with:
-          context: .
-          file: Dockerfile
+          context: ./src
+          file: ./src/Dockerfile
           push: true
           tags: |
-            andersontarj/convert-temperatura:latest
-            andersontarj/convert-temperatura:${{ github.run_number }}
-
+            andersontarj/rotten-potatoes:latest
+            andersontarj/rotten-potatoes:${{ github.run_number }}
   CD:
     needs: [CI]
     runs-on: ubuntu-latest
@@ -48,6 +47,6 @@ jobs:
       - name: Deploy to Kubernetes cluster
         uses: Azure/k8s-deploy@v3.0
         with:
-          images: andersontarj/convert-temperatura:${{ github.run_number }}
+          images: andersontarj/rotten-potatoes:${{ github.run_number }}
           manifests: |
-            deploy-conv-temp.yaml
+            k8s/deployment.yaml

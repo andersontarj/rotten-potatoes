@@ -48,7 +48,7 @@ kind: Deployment
 metadata:
   name: web
 spec:
-  replicas: 6
+  replicas: 1
   selector:
     matchLabels:
       app: web
@@ -57,13 +57,13 @@ spec:
       labels:
         app: web
     spec:
-#      topologySpreadConstraints:
-#      - maxSkew: 1
-#        topologyKey: kubernetes.io/hostname
-#        whenUnsatisfiable: ScheduleAnyway
-#        labelSelector:
-#          matchLabels:
-#            app: web
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: web
       containers:
       - name: web
         image: andersontarj/rotten-potatoes:latest

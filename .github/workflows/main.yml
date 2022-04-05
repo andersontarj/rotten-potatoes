@@ -1,5 +1,5 @@
 
-name: CI-CD
+name: CI-CD-Rotten-Potatoes
 
 on:
   push:
@@ -31,7 +31,6 @@ jobs:
           tags: |
             andersontarj/rotten-potatoes:latest
             andersontarj/rotten-potatoes:${{ github.run_number }}
-
   CD:
     needs: [CI]
     runs-on: ubuntu-latest

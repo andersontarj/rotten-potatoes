@@ -48,7 +48,7 @@ kind: Deployment
 metadata:
   name: web
 spec:
-  replicas: 4
+  replicas: 6
   selector:
     matchLabels:
       app: web
@@ -57,9 +57,17 @@ spec:
       labels:
         app: web
     spec:
+#      topologySpreadConstraints:
+#      - maxSkew: 1
+#        topologyKey: kubernetes.io/hostname
+#        whenUnsatisfiable: ScheduleAnyway
+#        labelSelector:
+#          matchLabels:
+#            app: web
       containers:
       - name: web
         image: andersontarj/rotten-potatoes:latest
+        imagePullPolicy: Always
         resources:
             requests:
               memory: "128Mi"
